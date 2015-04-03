@@ -12,20 +12,20 @@ fs = require('fs')
 module.exports = (robot) ->
 
 
-  robot.hear /.*/i, (msg) ->
-    date = moment().locale('ja')
-    prefix = date.format("YYYY_MM_DD_")
-    key = prefix + msg.message.room
-    msg.message.time = date.format("HH:mm:ss")
-    msg.message.date = date
-    append key, msg.message
-
-
-  append = (key, value) ->
-    path = "./logs/#{key}.json"
-    fs.writeFileSync path, "" unless fs.existsSync path
-    fs.readFile path, {encoding: 'utf-8'}, (err, data) ->
-      json = if data is "" then {logs: []} else JSON.parse(data)
-      json.logs.push(value)
-      fs.writeFile(path, JSON.stringify(json))
+#  robot.hear /.*/i, (msg) ->
+#    date = moment().locale('ja')
+#    prefix = date.format("YYYY_MM_DD_")
+#    key = prefix + msg.message.room
+#    msg.message.time = date.format("HH:mm:ss")
+#    msg.message.date = date
+#    append key, msg.message
+#
+#
+#  append = (key, value) ->
+#    path = "./logs/#{key}.json"
+#    fs.writeFileSync path, "" unless fs.existsSync path
+#    fs.readFile path, {encoding: 'utf-8'}, (err, data) ->
+#      json = if data is "" then {logs: []} else JSON.parse(data)
+#      json.logs.push(value)
+#      fs.writeFile(path, JSON.stringify(json))
 
