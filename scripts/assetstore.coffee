@@ -1,7 +1,8 @@
 module.exports = (robot) ->
-  session = process.env.ASSET_STORE_SESSION
+
 
   robot.hear "https://www.assetstore.unity3d.com/(.*)/#!/content/(.*)", (msg) ->
+    session = process.env.ASSET_STORE_SESSION
     return unless session?
     fields = []
 
