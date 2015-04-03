@@ -1,6 +1,5 @@
 module.exports = (robot) ->
 
-
   robot.hear "https://www.assetstore.unity3d.com/(.*)/#!/content/(.*)", (msg) ->
     session = process.env.ASSET_STORE_SESSION
     return unless session?
@@ -20,7 +19,7 @@ module.exports = (robot) ->
         short: true
 
       fields.push
-        title: if json.content.price? "$#{json.content.price.USD}": "無料"
+        title: if json.content.price then "$#{json.content.price.USD}" else "無料"
         value: json.content.sizetext
         short: true
 
