@@ -12,12 +12,12 @@ module.exports = (robot) ->
       return if res.statusCode isnt 200
 
       json = JSON.parse(body)
-      console.log(json.content.price)
+
       fields.push
         title: json.content.title
         value: json.content.category.label
         short: true
-        
+
       fields.push
         title: if json.content.price? "$#{json.content.price.USD}": "無料"
         value: json.content.sizetext
