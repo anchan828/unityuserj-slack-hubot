@@ -26,6 +26,9 @@ oauth2Client.setCredentials refresh_token: GOOGLE_REFRESH_TOKEN
 
 module.exports = (robot) ->
   robot.hear /.*/i, (msg) ->
+    return unless GOOGLE_DRIVE_ROOT_FOLDER_ID? or GOOGLE_CLIENT_ID? or GOOGLE_CLIENT_SECRET? or GOOGLE_REDIRECT_URL? or GOOGLE_REFRESH_TOKEN?
+
+
     date = moment().locale('ja')
     msg.message.time = date.format("HH:mm:ss")
     msg.message.date = date
@@ -62,4 +65,3 @@ module.exports = (robot) ->
         body: JSON.stringify(message)
     , (err, res) ->
       console.error err if err?
-      console.log("成功！やったね！")
