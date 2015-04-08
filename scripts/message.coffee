@@ -7,3 +7,6 @@ module.exports = (robot) ->
 
   robot.hear /^こんばん[は|わ]/i, (msg) ->
     msg.reply "こんばんは"
+
+  robot.hear /^こんにち[は|わ]/i, (msg) ->
+    msg.reply "こんにちは"
