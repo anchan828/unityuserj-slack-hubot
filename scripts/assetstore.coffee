@@ -37,7 +37,7 @@ module.exports = (robot) ->
         short: true
 
       fields.push
-        title: "価格"
+        title: "Price"
         value: if json.content.price then "$#{json.content.price.USD}" else "無料"
         short: true
 
