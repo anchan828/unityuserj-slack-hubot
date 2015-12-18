@@ -37,21 +37,25 @@ module.exports = (robot) ->
         short: true
 
       fields.push
-        title: if json.content.price then "$#{json.content.price.USD}" else "無料"
-        value: json.content.sizetext
+        title: "価格"
+        value: if json.content.price then "$#{json.content.price.USD}" else "無料"
+        short: true
+
+      fields.push
+        title: "Rating"
+        value: new Array(parseInt(json.content.rating.average,0) + 1).join(":star:")
+        short: true
+
+      fields.push
+        title: "Version"
+        value: json.content.version
         short: true
 
       payload =
         message: msg.message
         content:
-          fallback: "Fallback Text"
           color: "#ededed"
           fields: fields
+          image_url: "https:#{json.content.keyimage.big}"
 
-      msg.send "https:#{json.content.keyimage.big}"
-
-      setTimeout ->
-        robot.emit "slack-attachment", payload
-      , 500
-
-
+      robot.emit "slack-attachment", payload
