@@ -47,8 +47,8 @@ module.exports = (robot) ->
         short: true
 
       fields.push
-        title: "Version"
-        value: json.content.version
+        title: "Publisher"
+        value: json.content.publisher.label
         short: true
 
       payload =
