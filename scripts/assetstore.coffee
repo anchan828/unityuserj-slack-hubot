@@ -43,7 +43,7 @@ module.exports = (robot) ->
 
       fields.push
         title: "Rating"
-        value: new Array(parseInt(json.content.rating.average,0) + 1).join(":star:")
+        value: new Array(parseInt(json.content.rating.average,0) + 1).join(":star:") || "-"
         short: true
 
       fields.push
