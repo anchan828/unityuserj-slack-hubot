@@ -37,11 +37,6 @@ module.exports = (robot) ->
 
       json = JSON.parse(body)
 
-      fields.push
-        title: "Creator"
-        value: json.creator
-        short: true
-
       getThumbUrl json, (err, url) ->
         payload =
           message: msg.message
@@ -50,7 +45,6 @@ module.exports = (robot) ->
             title: json.name
             title_link: "https://www.assetstore.unity3d.com/#!/list/#{contentID}"
             text: json.description
-            fields: fields
             image_url: url
 
         robot.emit "slack-attachment", payload
