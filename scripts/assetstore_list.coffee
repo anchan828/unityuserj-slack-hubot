@@ -5,21 +5,23 @@ spawn = require('child_process').spawn;
 Gyazo = require('gyazo-api');
 client = new Gyazo(process.env.GYAZO_ACCESS_TOKEN);
 
-short_pattern = "https?://u3d.as/(.*)"
-pattern = "https://www.assetstore.unity3d.com(/.*)?/#!?/list/(.*)"
+short_pattern = /https?:\/\/u3d\.as\/(.*)\s?/
+pattern = /https?:\/\/www\.assetstore\.unity3d\.com\/?(.*)?\/#!?\/list\/(.*)\s?/
 
-# jp = ja-JP
-# cn = zh-CN
-# kr = ko-KR
-# en = en-US
+convertLang = (lang) ->
+  return "ja-JP" if lang is "jp"
+  return "zh-CN" if lang is "cn"
+  return "ko-KR" if lang is "kr"
+  return "en-US" if lang is "en" or lang is "" or lang is undefined
 
 module.exports = (robot) ->
   robot.hear short_pattern, (msg) ->
     msg.http(msg.match[0])
     .get() (err, res, body) ->
-      emit msg, "ja-JP", match[2] if match = res.headers?.location?.match(pattern)
+      if match = res.headers?.location?.match(pattern)
+        emit msg, convertLang(match[1]), match[2]
 
-  robot.hear pattern, (msg) -> emit msg, "ja-JP", msg.match[2]
+  robot.hear pattern, (msg) -> emit msg, convertLang(msg.match[1]), msg.match[2]
 
   emit = (msg, lang, contentID) ->
     session = process.env.ASSET_STORE_SESSION
