@@ -29,42 +29,49 @@ module.exports = (robot) ->
       return
 
     fields = []
-
-    msg.http("https://www.assetstore.unity3d.com/api/#{lang}/content/overview/#{contentID}.json")
+    
+    msg.http("https://www.assetstore.unity3d.com/api/#{lang}/content/price/#{contentID}.json")
     .header("X-Requested-With", "SlackBot")
     .header("X-Unity-Session", session)
-    .get() (err, res, body) ->
-      return if res.statusCode isnt 200
+    .get() (err, res, priceBody) ->
+      
+      priceJson = JSON.parse(priceBody)
+      
+      msg.http("https://www.assetstore.unity3d.com/api/#{lang}/content/overview/#{contentID}.json")
+      .header("X-Requested-With", "SlackBot")
+      .header("X-Unity-Session", session)
+      .get() (err, res, body) ->
+        return if res.statusCode isnt 200
 
-      json = JSON.parse(body)
+        json = JSON.parse(body)
 
-      fields.push
-        title: "Category"
-        value: json.content.category.label
-        short: true
+        fields.push
+          title: "Category"
+          value: json.content.category.label
+          short: true
 
-      fields.push
-        title: "Price"
-        value: if json.content.price then "$#{json.content.price.USD}" else "Free"
-        short: true
+        fields.push
+          title: "Price"
+          value: if priceJson.price then "#{priceJson.price}" else "Free"
+          short: true
 
-      fields.push
-        title: "Rating"
-        value: new Array(parseInt(json.content.rating.average, 0) + 1).join(":star:") || "-"
-        short: true
+        fields.push
+          title: "Rating"
+          value: new Array(parseInt(json.content.rating.average, 0) + 1).join(":star:") || "-"
+          short: true
 
-      fields.push
-        title: "Publisher"
-        value: json.content.publisher.label
-        short: true
+        fields.push
+          title: "Publisher"
+          value: json.content.publisher.label
+          short: true
 
-      payload =
-        message: msg.message
-        content:
-          title: json.content.title
-          title_link: json.content.short_url
-          color: "#ededed"
-          fields: fields
-          image_url: "https:#{json.content.keyimage.big}"
+        payload =
+          message: msg.message
+          content:
+            title: json.content.title
+            title_link: json.content.short_url
+            color: "#ededed"
+            fields: fields
+            image_url: "https:#{json.content.keyimage.big}"
 
-      robot.emit "slack-attachment", payload
+        robot.emit "slack-attachment", payload
